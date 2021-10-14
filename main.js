@@ -1,9 +1,9 @@
-import { app, BrowserWindow } from 'electron';
+const { app, BrowserWindow } = require('electron');
 
 async function createWindow() {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 320,
+    height: 480,
   });
 
   await win.loadFile('dist/index.html');

@@ -19,6 +19,12 @@
   },
   "overrides": [
     {
+      "files": ["main.js"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off"
+      }
+    },
+    {
       "files": ["tests/**/*.spec.{j,t}s"],
       "env": {
         "jest": true
