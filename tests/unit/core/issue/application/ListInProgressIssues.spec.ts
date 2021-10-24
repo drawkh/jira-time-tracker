@@ -1,8 +1,8 @@
 import { ListInProgressIssuesQueryUsingInMemory } from '@/core/issue/adapter/out/ListInProgressIssuesQueryUsingInMemory';
 import { ListInProgressIssues } from '@/core/issue/application/service/ListInProgressIssues';
-import { Issue } from '@/core/issue/domain/Issue';
 import { PaginatedCollection } from '@/core/common/domain/PaginatedCollection';
 import { PageInfo } from '@/core/common/domain/PageInfo';
+import { IssueBuilder } from '../../../../utils/builders/IssueBuilder';
 
 describe('ListInProgressIssues', () => {
   describe('Given no registered issues', () => {
@@ -22,13 +22,19 @@ describe('ListInProgressIssues', () => {
   describe('Given a registered issue', () => {
     it('should return a page containing the issue', async () => {
       const service = new ListInProgressIssues(
-        new ListInProgressIssuesQueryUsingInMemory([new Issue('Issue 1')])
+        new ListInProgressIssuesQueryUsingInMemory([
+          new IssueBuilder().withTitle('Issue 1').build(),
+        ])
       );
 
       const response = await service.execute();
 
       expect(response).toEqual(
-        new PaginatedCollection([new Issue('Issue 1')], 1, new PageInfo(1, 1))
+        new PaginatedCollection(
+          [new IssueBuilder().withTitle('Issue 1').build()],
+          1,
+          new PageInfo(1, 1)
+        )
       );
     });
   });
@@ -37,11 +43,11 @@ describe('ListInProgressIssues', () => {
     it('should return a page containing multiple issues', async () => {
       const service = new ListInProgressIssues(
         new ListInProgressIssuesQueryUsingInMemory([
-          new Issue('Issue 1'),
-          new Issue('Issue 2'),
-          new Issue('Issue 3'),
-          new Issue('Issue 4'),
-          new Issue('Issue 5'),
+          new IssueBuilder().withTitle('Issue 1').build(),
+          new IssueBuilder().withTitle('Issue 2').build(),
+          new IssueBuilder().withTitle('Issue 3').build(),
+          new IssueBuilder().withTitle('Issue 4').build(),
+          new IssueBuilder().withTitle('Issue 5').build(),
         ])
       );
 
@@ -50,11 +56,11 @@ describe('ListInProgressIssues', () => {
       expect(response).toEqual(
         new PaginatedCollection(
           [
-            new Issue('Issue 1'),
-            new Issue('Issue 2'),
-            new Issue('Issue 3'),
-            new Issue('Issue 4'),
-            new Issue('Issue 5'),
+            new IssueBuilder().withTitle('Issue 1').build(),
+            new IssueBuilder().withTitle('Issue 2').build(),
+            new IssueBuilder().withTitle('Issue 3').build(),
+            new IssueBuilder().withTitle('Issue 4').build(),
+            new IssueBuilder().withTitle('Issue 5').build(),
           ],
           5,
           new PageInfo(1, 1)
@@ -65,12 +71,12 @@ describe('ListInProgressIssues', () => {
     it('should return the first page containing the first part of the issues', async () => {
       const service = new ListInProgressIssues(
         new ListInProgressIssuesQueryUsingInMemory([
-          new Issue('Issue 1'),
-          new Issue('Issue 2'),
-          new Issue('Issue 3'),
-          new Issue('Issue 4'),
-          new Issue('Issue 5'),
-          new Issue('Issue 6'),
+          new IssueBuilder().withTitle('Issue 1').build(),
+          new IssueBuilder().withTitle('Issue 2').build(),
+          new IssueBuilder().withTitle('Issue 3').build(),
+          new IssueBuilder().withTitle('Issue 4').build(),
+          new IssueBuilder().withTitle('Issue 5').build(),
+          new IssueBuilder().withTitle('Issue 6').build(),
         ])
       );
 
@@ -79,11 +85,11 @@ describe('ListInProgressIssues', () => {
       expect(response).toEqual(
         new PaginatedCollection(
           [
-            new Issue('Issue 1'),
-            new Issue('Issue 2'),
-            new Issue('Issue 3'),
-            new Issue('Issue 4'),
-            new Issue('Issue 5'),
+            new IssueBuilder().withTitle('Issue 1').build(),
+            new IssueBuilder().withTitle('Issue 2').build(),
+            new IssueBuilder().withTitle('Issue 3').build(),
+            new IssueBuilder().withTitle('Issue 4').build(),
+            new IssueBuilder().withTitle('Issue 5').build(),
           ],
           6,
           new PageInfo(1, 2)
@@ -94,12 +100,12 @@ describe('ListInProgressIssues', () => {
     it('should return the second page containing the last part of the issues', async () => {
       const service = new ListInProgressIssues(
         new ListInProgressIssuesQueryUsingInMemory([
-          new Issue('Issue 1'),
-          new Issue('Issue 2'),
-          new Issue('Issue 3'),
-          new Issue('Issue 4'),
-          new Issue('Issue 5'),
-          new Issue('Issue 6'),
+          new IssueBuilder().withTitle('Issue 1').build(),
+          new IssueBuilder().withTitle('Issue 2').build(),
+          new IssueBuilder().withTitle('Issue 3').build(),
+          new IssueBuilder().withTitle('Issue 4').build(),
+          new IssueBuilder().withTitle('Issue 5').build(),
+          new IssueBuilder().withTitle('Issue 6').build(),
         ])
       );
 
@@ -108,7 +114,11 @@ describe('ListInProgressIssues', () => {
       });
 
       expect(response).toEqual(
-        new PaginatedCollection([new Issue('Issue 6')], 6, new PageInfo(2, 2))
+        new PaginatedCollection(
+          [new IssueBuilder().withTitle('Issue 6').build()],
+          6,
+          new PageInfo(2, 2)
+        )
       );
     });
   });
